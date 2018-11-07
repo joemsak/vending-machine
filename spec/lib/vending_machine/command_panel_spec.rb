@@ -22,6 +22,12 @@ RSpec.describe VendingMachine::CommandPanel do
 
         command_panel.push_button(column_num)
         expect(command_panel.selected_column).to be_nil
+      end
+
+      it "sets the selected column" do
+        command_panel = VendingMachine::CommandPanel.new
+
+        column_num = Array(0..9).sample
 
         command_panel.push_button(:d)
         command_panel.push_button(column_num)
