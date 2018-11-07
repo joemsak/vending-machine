@@ -1,6 +1,6 @@
 module VendingMachine
-  class BalanceHandler
-    def current_balance
+  class Account
+    def balance
       0
     end
   end

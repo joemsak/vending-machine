@@ -1,11 +1,11 @@
 require "spec_helper"
-require "vending_machine/balance_handler"
+require "vending_machine/account"
 
-RSpec.describe VendingMachine::BalanceHandler do
-  describe "#current_balance" do
+RSpec.describe VendingMachine::Account do
+  describe "#balance" do
     it "starts at 0" do
-      balance_handler = VendingMachine::BalanceHandler.new
-      expect(balance_handler.current_balance).to eq(0)
+      account = VendingMachine::Account.new
+      expect(account.balance).to eq(0)
     end
 
     it "rejects pennies"
