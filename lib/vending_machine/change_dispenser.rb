@@ -1,7 +1,6 @@
 module VendingMachine
   class ChangeDispenser
-    def dispense_balance(account)
-      change_due = account.reset_balance
+    def dispense_balance(change_due)
       dispense_coins(change_due.in_coins)
       dispense_bills(change_due.in_bills)
     end
