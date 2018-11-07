@@ -88,6 +88,7 @@ RSpec.describe VendingMachine::Account do
       account.add_funds(0.25)
 
       expect(account.balance).to eq(22.05)
+      expect(account.change_due).to eq(22.05)
     end
   end
 end

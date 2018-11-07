@@ -18,9 +18,9 @@ module VendingMachine
 
       if money.acceptable?
         self.balance += money.amount
-      else
-        self.change_due += money.amount
       end
+
+      self.change_due += money.amount
     end
   end
 end
