@@ -19,5 +19,27 @@ module VendingMachine
         self.balance += money.amount
       end
     end
+
+    def reset_balance
+      change_due = ChangeDue.new(balance)
+      self.balance = 0
+      change_due
+    end
+
+    class ChangeDue
+      attr_reader :in_bills, :in_coins
+
+      def initialize(amount)
+        split = String(amount).split(".")
+
+        @in_bills = split.first.to_i
+
+        if split.size == 2
+          @in_coins = split.last.to_i / 100.0
+        else
+          @in_coins = 0
+        end
+      end
+    end
   end
 end

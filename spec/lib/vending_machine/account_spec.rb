@@ -9,6 +9,27 @@ RSpec.describe VendingMachine::Account do
     end
   end
 
+  describe "#reset_balance" do
+    it "resets the balance to 0" do
+      account = VendingMachine::Account.new
+      account.add_funds(1)
+      account.reset_balance
+      expect(account.balance).to eq(0)
+    end
+
+    it "returns an Account::ChangeDue object" do
+      account = VendingMachine::Account.new
+
+      account.add_funds(1)
+      account.add_funds(0.05)
+
+      change_due = account.reset_balance
+
+      expect(change_due.in_bills).to eq(1)
+      expect(change_due.in_coins).to eq(0.05)
+    end
+  end
+
   describe "#add_funds" do
     it "rejects pennies" do
       account = VendingMachine::Account.new
