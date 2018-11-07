@@ -24,14 +24,25 @@ RSpec.describe VendingMachine::CommandPanel do
         expect(command_panel.selected_column).to be_nil
       end
 
-      it "sets the selected column" do
-        command_panel = VendingMachine::CommandPanel.new
+      it "notifies the machine of the attempted purchase" do
+        inventory = double(:inventory)
+        command_panel = VendingMachine::CommandPanel.new(inventory: inventory)
 
-        column_num = Array(0..9).sample
+        expect(inventory).to receive(:attempt_purchase)
+          .with(:d, 9, command_panel.account)
 
         command_panel.push_button(:d)
-        command_panel.push_button(column_num)
-        expect(command_panel.selected_column).to eq(column_num)
+        command_panel.push_button(9)
+      end
+
+      it "resets selected row / column" do
+        command_panel = VendingMachine::CommandPanel.new
+
+        command_panel.push_button(:d)
+        command_panel.push_button(9)
+
+        expect(command_panel.selected_column).to be_nil
+        expect(command_panel.selected_row).to be_nil
       end
     end
 
