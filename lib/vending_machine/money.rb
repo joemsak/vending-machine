@@ -2,12 +2,18 @@ module VendingMachine
   class Money
     attr_reader :amount
 
+    ACCEPTED_DENOMINATIONS = [
+      0.05,
+      0.10,
+      0.25,
+    ]
+
     def initialize(amount)
       @amount = amount
     end
 
     def acceptable?
-      [0.05, 0.1].include?(amount)
+      ACCEPTED_DENOMINATIONS.include?(amount)
     end
   end
 end
