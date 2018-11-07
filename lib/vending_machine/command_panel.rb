@@ -11,7 +11,10 @@ module VendingMachine
     end
 
     def push_button(name)
-      change_dispenser.dispense_balance(account)
+      case name
+      when :cancel
+        change_dispenser.dispense_balance(account)
+      end
     end
   end
 end

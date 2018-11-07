@@ -18,5 +18,19 @@ RSpec.describe VendingMachine::CommandPanel do
         command_panel.push_button(:cancel)
       end
     end
+
+    context "not :cancel" do
+      it "does not signal the change dispenser" do
+        change_dispenser = double(:change_dispenser)
+
+        command_panel = VendingMachine::CommandPanel.new(
+          change_dispenser: change_dispenser,
+        )
+
+        expect(change_dispenser).not_to receive(:dispense_balance)
+
+        command_panel.push_button(:not_cancel)
+      end
+    end
   end
 end
