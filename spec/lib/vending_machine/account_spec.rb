@@ -36,8 +36,18 @@ RSpec.describe VendingMachine::Account do
       expect(account.change_due).to eq(amount)
     end
 
-    it "accepts nickels"
-    it "accepts dimes"
+    it "accepts nickels" do
+      account = VendingMachine::Account.new
+      account.add_funds(0.05)
+      expect(account.balance).to eq(0.05)
+    end
+
+    it "accepts dimes" do
+      account = VendingMachine::Account.new
+      account.add_funds(0.10)
+      expect(account.balance).to eq(0.10)
+    end
+
     it "accepts quarters"
     it "accepts $1 bills"
     it "accepts $5 bills"
