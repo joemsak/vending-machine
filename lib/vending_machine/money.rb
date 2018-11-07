@@ -6,6 +6,9 @@ module VendingMachine
       0.05,
       0.10,
       0.25,
+      1,
+      5,
+      10,
     ]
 
     def initialize(amount)

@@ -54,9 +54,24 @@ RSpec.describe VendingMachine::Account do
       expect(account.balance).to eq(0.25)
     end
 
-    it "accepts $1 bills"
-    it "accepts $5 bills"
-    it "accepts $10 bills"
+    it "accepts $1 bills" do
+      account = VendingMachine::Account.new
+      account.add_funds(1.00)
+      expect(account.balance).to eq(1.00)
+    end
+
+    it "accepts $5 bills" do
+      account = VendingMachine::Account.new
+      account.add_funds(5.00)
+      expect(account.balance).to eq(5.00)
+    end
+
+    it "accepts $10 bills" do
+      account = VendingMachine::Account.new
+      account.add_funds(10.00)
+      expect(account.balance).to eq(10.00)
+    end
+
     it "accepts a mix of valid coins & bills"
   end
 end
