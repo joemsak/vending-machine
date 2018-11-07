@@ -7,8 +7,15 @@ RSpec.describe VendingMachine::Account do
       account = VendingMachine::Account.new
       expect(account.balance).to eq(0)
     end
+  end
 
-    it "rejects pennies"
+  describe "#change_due" do
+    it "starts at 0" do
+      account = VendingMachine::Account.new
+      expect(account.change_due).to eq(0)
+    end
+  end
+
     it "rejects bills greater than $10"
     it "accepts nickels"
     it "accepts dimes"
