@@ -5,7 +5,7 @@ RSpec.describe VendingMachine::CommandPanel do
   describe "#push_button" do
     context ":cancel" do
       it "tells the change dispenser to dispense the account balance" do
-        account = double(:account, balance: 12.35)
+        account = double(:account)
         change_dispenser = double(:change_dispenser)
 
         command_panel = VendingMachine::CommandPanel.new(
@@ -13,7 +13,7 @@ RSpec.describe VendingMachine::CommandPanel do
           change_dispenser: change_dispenser,
         )
 
-        expect(change_dispenser).to receive(:dispense).with(12.35)
+        expect(change_dispenser).to receive(:dispense_balance).with(account)
 
         command_panel.push_button(:cancel)
       end
