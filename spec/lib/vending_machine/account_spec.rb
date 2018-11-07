@@ -16,6 +16,16 @@ RSpec.describe VendingMachine::Account do
     end
   end
 
+  describe "#add_funds" do
+    it "rejects pennies" do
+      account = VendingMachine::Account.new
+
+      account.add_funds(0.01)
+
+      expect(account.balance).to eq(0)
+      expect(account.change_due).to eq(0.01)
+    end
+
     it "rejects bills greater than $10"
     it "accepts nickels"
     it "accepts dimes"
