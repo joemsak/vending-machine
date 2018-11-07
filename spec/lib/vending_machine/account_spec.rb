@@ -9,13 +9,6 @@ RSpec.describe VendingMachine::Account do
     end
   end
 
-  describe "#change_due" do
-    it "starts at 0" do
-      account = VendingMachine::Account.new
-      expect(account.change_due).to eq(0)
-    end
-  end
-
   describe "#add_funds" do
     it "rejects pennies" do
       account = VendingMachine::Account.new
@@ -23,7 +16,6 @@ RSpec.describe VendingMachine::Account do
       account.add_funds(0.01)
 
       expect(account.balance).to eq(0)
-      expect(account.change_due).to eq(0.01)
     end
 
     it "rejects bills greater than $10" do
@@ -33,7 +25,6 @@ RSpec.describe VendingMachine::Account do
       account.add_funds(amount)
 
       expect(account.balance).to eq(0)
-      expect(account.change_due).to eq(amount)
     end
 
     it "accepts nickels" do
@@ -88,7 +79,6 @@ RSpec.describe VendingMachine::Account do
       account.add_funds(0.25)
 
       expect(account.balance).to eq(22.05)
-      expect(account.change_due).to eq(22.05)
     end
   end
 end
