@@ -1,3 +1,5 @@
+require 'vending_machine/money'
+
 module VendingMachine
   class Account
     attr_reader :balance, :change_due
@@ -19,18 +21,6 @@ module VendingMachine
       else
         self.change_due += money.amount
       end
-    end
-
-    class Money
-      attr_reader :amount
-
-      def initialize(amount)
-        @amount = amount
-      end
-
-      def acceptable?
-        [0.05, 0.1].include?(amount)
-     end
     end
   end
 end
