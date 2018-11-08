@@ -10,7 +10,7 @@ module VendingMachine
   autoload :CommandPanel,    'vending_machine/command_panel'
 
   def self.power_on
-    @@machine ||= Machine.new
+    Machine.new
   end
 
   class Machine
