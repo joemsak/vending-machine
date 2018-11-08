@@ -16,33 +16,38 @@ module VendingMachine
 
     def push_button(name)
       case String(name)
-      when /\Acancel\z/; cancel_transaction
+      when /\Acancel\z/; reset_machine
       when /\A[a-g]\z/;  set_row(name)
       when /\A\d\z/;     maybe_set_column(name)
       end
 
-      handle_completed_entry
+      handle_selection if selected_row && selected_column
     end
 
     private
-    def handle_completed_entry
-      if selected_row && selected_column
-        purchase = inventory.attempt_purchase(selected_row, selected_column, account)
+    def handle_selection
+      if purchase = inventory.attempt_purchase(
+                      selected_row,
+                      selected_column,
+                      account
+                    )
         handle_purchase(purchase)
-        @selected_column = nil
-        @selected_row = nil
       end
+
+      reset_selection
     end
 
     def handle_purchase(purchase)
-      if purchase
-        account.subtract_funds(purchase.cost)
-        change_due = account.reset_balance
-        change_dispenser.dispense_balance(change_due)
-      end
+      account.subtract_funds(purchase.cost)
+      reset_machine
     end
 
-    def cancel_transaction
+    def reset_selection
+      @selected_column = nil
+      @selected_row = nil
+    end
+
+    def reset_machine
       change_due = account.reset_balance
       change_dispenser.dispense_balance(change_due)
     end
