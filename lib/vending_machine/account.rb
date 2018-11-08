@@ -2,14 +2,16 @@ require 'vending_machine/money'
 
 module VendingMachine
   class Account
-    attr_reader :balance
-
     private
     attr_writer :balance
 
     public
     def initialize
       @balance = 0
+    end
+
+    def balance
+      @balance.round(2)
     end
 
     def add_funds(amount)

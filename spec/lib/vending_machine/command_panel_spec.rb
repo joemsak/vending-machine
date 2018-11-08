@@ -2,6 +2,26 @@ require "spec_helper"
 require "vending_machine/command_panel"
 
 RSpec.describe VendingMachine::CommandPanel do
+  describe "#insert_coins" do
+    it "adds funds to the account" do
+      command_panel = VendingMachine::CommandPanel.new
+      account = command_panel.account
+
+      command_panel.insert_coins(0.10, 0.05, 0.01)
+      expect(account.balance).to eq(0.15)
+    end
+  end
+
+  describe "#insert_bills" do
+    it "adds funds to the account" do
+      command_panel = VendingMachine::CommandPanel.new
+      account = command_panel.account
+
+      command_panel.insert_bills(1.00, 5.00, 20.00)
+      expect(account.balance).to eq(6.00)
+    end
+  end
+
   describe "#push_button" do
     context ":a, :b, :c, :d, :e, :f, and :g" do
       it "stores the row name as such" do

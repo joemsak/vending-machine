@@ -26,6 +26,18 @@ module VendingMachine
       handle_selection if selected_row && selected_column
     end
 
+    def insert_coins(*coins)
+      coins.each do |amount|
+        account.add_funds(amount)
+      end
+    end
+
+    def insert_bills(*bills)
+      bills.each do |amount|
+        account.add_funds(amount)
+      end
+    end
+
     private
     def handle_selection
       purchase = inventory.attempt_purchase(
