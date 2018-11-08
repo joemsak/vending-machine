@@ -1,0 +1,71 @@
+Randomized with seed 2871
+
+VendingMachine
+  .power_on
+    initializes the change dispenser
+    initializes the display
+    initializes the inventory
+    initializes the account
+    initializes the command panel
+    initializes the command panel with the components
+
+VendingMachine::Account
+  #reset_balance
+    resets the balance to 0
+    returns an Account::ChangeDue object
+  #balance
+    starts at 0
+  #subtract_funds
+    decreases the balance by the amount given
+  #add_funds
+    accepts a mix of valid coins & bills
+    accepts $10 bills
+    accepts quarters
+    accepts dimes
+    accepts nickels
+    accepts $5 bills
+    rejects bills greater than $10
+    rejects pennies
+    accepts $1 bills
+
+VendingMachine::CommandPanel
+  #insert_bills
+    adds funds to the account
+  #push_button
+    not :cancel
+      does not signal the change dispenser
+    0 through 9
+      notifies the machine of the attempted purchase
+      dispenses the item after a successful purchase
+      passes on failed purchase error messages to the display
+      dispenses any change left from a successful purchase
+      resets selected row / column
+      does nothing without a selected row
+    :a, :b, :c, :d, :e, :f, and :g
+      stores the row name as such
+    :cancel
+      gets the change due from resetting the account balance
+      tells the change dispenser to dispense the change due
+  #insert_coins
+    adds funds to the account
+
+VendingMachine::ChangeDispenser
+  #dispense_balance
+    sends coins to the coin bin
+    sends bills out the bill collector
+
+VendingMachine::Inventory
+  #restock_items
+    fills the quantity of the given section
+  #attempt_purchase
+    returns a successful purchase otherwise
+    returns a failed purchase for the product being sold out
+    returns a failed purchase for the account balance being too low
+  #designate_section
+    sets the product name
+    sets the product price
+  #stock_item
+    stocks no more than 10 items
+    stocks one item in the section
+
+41 examples, 0 failures
