@@ -27,9 +27,18 @@ module VendingMachine
     private
     def handle_completed_entry
       if selected_row && selected_column
-        inventory.attempt_purchase(selected_row, selected_column, account)
+        purchase = inventory.attempt_purchase(selected_row, selected_column, account)
+        handle_purchase(purchase)
         @selected_column = nil
         @selected_row = nil
+      end
+    end
+
+    def handle_purchase(purchase)
+      if purchase
+        account.subtract_funds(purchase.cost)
+        change_due = account.reset_balance
+        change_dispenser.dispense_balance(change_due)
       end
     end
 

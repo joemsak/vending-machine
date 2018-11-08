@@ -44,6 +44,24 @@ RSpec.describe VendingMachine::CommandPanel do
         expect(command_panel.selected_column).to be_nil
         expect(command_panel.selected_row).to be_nil
       end
+
+      it "dispenses any change left from a successful purchase" do
+        purchase = double(:purchase, cost: 1.00)
+        inventory = double(:inventory, attempt_purchase: purchase)
+
+        command_panel = VendingMachine::CommandPanel.new(inventory: inventory)
+        change_dispenser = command_panel.change_dispenser
+        account = command_panel.account
+
+        account.add_funds(5)
+
+        expect(change_dispenser).to receive(:dispense_bills).with(4)
+
+        command_panel.push_button(:d)
+        command_panel.push_button(9)
+
+        expect(account.balance).to eq(0)
+      end
     end
 
     context ":cancel" do

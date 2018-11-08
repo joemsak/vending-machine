@@ -30,6 +30,15 @@ RSpec.describe VendingMachine::Account do
     end
   end
 
+  describe "#subtract_funds" do
+    it "decreases the balance by the amount given" do
+      account = VendingMachine::Account.new
+      account.add_funds(5)
+      account.subtract_funds(2.50)
+      expect(account.balance).to eq(2.50)
+    end
+  end
+
   describe "#add_funds" do
     it "rejects pennies" do
       account = VendingMachine::Account.new

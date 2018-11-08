@@ -20,6 +20,10 @@ module VendingMachine
       end
     end
 
+    def subtract_funds(amount)
+      self.balance -= amount
+    end
+
     def reset_balance
       change_due = ChangeDue.new(balance)
       self.balance = 0
