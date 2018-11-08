@@ -25,11 +25,13 @@ RSpec.describe VendingMachine::CommandPanel do
       end
 
       it "notifies the machine of the attempted purchase" do
-        inventory = double(:inventory)
-        command_panel = VendingMachine::CommandPanel.new(inventory: inventory)
+        command_panel = VendingMachine::CommandPanel.new
+        account = command_panel.account
+        inventory = command_panel.inventory
 
         expect(inventory).to receive(:attempt_purchase)
-          .with(:d, 9, command_panel.account)
+          .with(:d, 9, account)
+          .and_call_original
 
         command_panel.push_button(:d)
         command_panel.push_button(9)
@@ -46,13 +48,14 @@ RSpec.describe VendingMachine::CommandPanel do
       end
 
       it "dispenses any change left from a successful purchase" do
-        purchase = double(:purchase, cost: 1.00)
-        inventory = double(:inventory, attempt_purchase: purchase)
-
-        command_panel = VendingMachine::CommandPanel.new(inventory: inventory)
+        command_panel = VendingMachine::CommandPanel.new
+        inventory = command_panel.inventory
         change_dispenser = command_panel.change_dispenser
         account = command_panel.account
 
+        product = double(:product, name: "CHIPS", price: 1.00)
+
+        inventory.stock_item(:d, 9, product)
         account.add_funds(5)
 
         expect(change_dispenser).to receive(:dispense_bills).with(4)

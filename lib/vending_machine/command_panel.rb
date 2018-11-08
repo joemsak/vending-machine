@@ -26,18 +26,20 @@ module VendingMachine
 
     private
     def handle_selection
-      if purchase = inventory.attempt_purchase(
-                      selected_row,
-                      selected_column,
-                      account
-                    )
-        handle_purchase(purchase)
+      purchase = inventory.attempt_purchase(
+        selected_row,
+        selected_column,
+        account
+      )
+
+      if purchase.succeeded?
+        handle_successful_purchase(purchase)
       else
         reset_selection
       end
     end
 
-    def handle_purchase(purchase)
+    def handle_successful_purchase(purchase)
       account.subtract_funds(purchase.cost)
       reset_machine
     end
