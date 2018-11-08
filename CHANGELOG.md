@@ -1,3 +1,9 @@
-# v 0.0.1a
+# v 0.1.0
 
-Nothing yet...
+Initial version
+
+* Impements base Machine
+* Impements base CommandPanel
+* Implements base Inventory
+* Implements base Account
+* Implements base ChangeDispenser
