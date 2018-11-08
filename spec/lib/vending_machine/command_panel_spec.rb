@@ -65,6 +65,25 @@ RSpec.describe VendingMachine::CommandPanel do
 
         expect(account.balance).to eq(0)
       end
+
+      it "dispenses the item after a successful purchase" do
+        command_panel = VendingMachine::CommandPanel.new
+        inventory = command_panel.inventory
+        change_dispenser = command_panel.change_dispenser
+        account = command_panel.account
+
+        product = double(:product, name: "CHIPS", price: 1.00)
+
+        inventory.stock_item(:d, 9, product)
+        account.add_funds(5)
+
+        expect {
+          command_panel.push_button(:d)
+          command_panel.push_button(9)
+        }.to change {
+          inventory.items[:d][9].count
+        }.from(1).to(0)
+      end
     end
 
     context ":cancel" do

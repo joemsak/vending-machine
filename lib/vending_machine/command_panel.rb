@@ -40,6 +40,7 @@ module VendingMachine
     end
 
     def handle_successful_purchase(purchase)
+      inventory.dispense_item(selected_row, selected_column)
       account.subtract_funds(purchase.cost)
       reset_machine
     end

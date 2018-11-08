@@ -79,6 +79,12 @@ module VendingMachine
       end
     end
 
+    def dispense_item(row, column)
+      item = items[row][column].shift
+      # call the machine's low-level API to
+      # drop the item into the open compartment
+    end
+
     def attempt_purchase(row, column, account)
       item = items[row][column].first
 
