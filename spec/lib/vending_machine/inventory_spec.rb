@@ -1,3 +1,4 @@
+require 'ostruct'
 require "spec_helper"
 require "vending_machine/inventory"
 
@@ -25,6 +26,25 @@ RSpec.describe VendingMachine::Inventory do
       }.not_to change {
         inventory.items[:a][0].count
       }.from(10)
+    end
+  end
+
+  describe "#restock_items" do
+    it "fills a section with the same product" do
+      product = OpenStruct.new(name: "CHIPS", price: 3.00)
+
+      inventory = VendingMachine::Inventory.new
+      inventory.stock_item(:a, 0, product)
+
+      expect {
+        inventory.restock_items(:a, 0)
+      }.to change {
+        inventory.items[:a][0].count
+      }.from(1).to(10)
+
+      items = inventory.items[:a][0]
+      expect(items.map(&:name).uniq).to eq(["CHIPS"])
+      expect(items.map(&:price).uniq).to eq([3.00])
     end
   end
 

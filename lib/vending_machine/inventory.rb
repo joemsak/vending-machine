@@ -79,6 +79,13 @@ module VendingMachine
       end
     end
 
+    def restock_items(row, column)
+      while items[row][column].count < 10
+        product = items[row][column].first
+        items[row][column].push(product.dup)
+      end
+    end
+
     def dispense_item(row, column)
       item = items[row][column].shift
       # call the machine's low-level API to
