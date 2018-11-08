@@ -1,107 +1,79 @@
 module VendingMachine
   class Inventory
-    attr_reader :items
+    attr_reader :sections
 
     def initialize
-      @items = {
-        a: {
-          0 => [],
-          1 => [],
-          2 => [],
-          3 => [],
-          4 => [],
-        },
-        b: {
-          0 => [],
-          1 => [],
-          2 => [],
-          3 => [],
-          4 => [],
-        },
-        c: {
-          0 => [],
-          1 => [],
-          2 => [],
-          3 => [],
-          4 => [],
-        },
-        d: {
-          0 => [],
-          1 => [],
-          2 => [],
-          3 => [],
-          4 => [],
-          5 => [],
-          6 => [],
-          7 => [],
-          8 => [],
-          9 => [],
-        },
-        e: {
-          0 => [],
-          1 => [],
-          2 => [],
-          3 => [],
-          4 => [],
-          5 => [],
-          6 => [],
-          7 => [],
-          8 => [],
-          9 => [],
-        },
-        f: {
-          0 => [],
-          1 => [],
-          2 => [],
-          3 => [],
-          4 => [],
-        },
-        h: {
-          0 => [],
-          1 => [],
-          2 => [],
-          3 => [],
-          4 => [],
-          5 => [],
-          6 => [],
-          7 => [],
-          8 => [],
-          9 => [],
-        },
-      }
+      @sections = {}
     end
 
-    def stock_item(row, column, product)
-      if items[row][column].count < 10
-        items[row][column].push(product)
-      else
-        false
-      end
+    def designate_section(row, column, **options)
+      sections[row] ||= {}
+      sections[row][column] = Section.new(options)
+    end
+
+    def read_section(row, column)
+      row = sections[row]
+
+      row && row[column] || Section.new
+    end
+
+    def stock_item(row, column)
+      read_section(row, column).increment_quantity
     end
 
     def restock_items(row, column)
-      while items[row][column].count < 10
-        product = items[row][column].first
-        items[row][column].push(product.dup)
-      end
+      read_section(row, column).fill_quantity
     end
 
     def dispense_item(row, column)
-      item = items[row][column].shift
-      # call the machine's low-level API to
-      # drop the item into the open compartment
+      section = read_section(row, column)
+      section.dispense_product
     end
 
     def attempt_purchase(row, column, account)
-      item = items[row][column].first
+      section = read_section(row, column)
 
-      if !item
+      if section.quantity.zero?
         FailedPurchase.new("SOLD OUT")
-      elsif item.price > account.balance
-        amount_needed = (item.price - account.balance)
+      elsif section.price > account.balance
+        amount_needed = (section.price - account.balance)
         FailedPurchase.new("MUST ADD $#{sprintf('%.2f', amount_needed)}")
       else
-        SuccessfulPurchase.new(item)
+        SuccessfulPurchase.new(section)
+      end
+    end
+
+    class Section
+      attr_reader :name, :price, :quantity
+
+      private
+      attr_writer :quantity
+
+      public
+      def initialize(**options)
+        @name = options.fetch(:name) { "EMPTY" }
+        @price = options.fetch(:price) { 0.00 }
+        @quantity = 0
+      end
+
+      def dispense_product
+        self.quantity -= 1
+        # command the machine API to drop 1 product
+        # into the open compartment
+      end
+
+      def increment_quantity
+        if quantity < 10
+          self.quantity += 1
+        else
+          false
+        end
+      end
+
+      def fill_quantity
+        while quantity < 10
+          self.quantity += 1
+        end
       end
     end
 
@@ -124,8 +96,8 @@ module VendingMachine
     class SuccessfulPurchase
       attr_reader :cost
 
-      def initialize(item)
-        @cost = item.price
+      def initialize(section)
+        @cost = section.price
       end
 
       def succeeded?

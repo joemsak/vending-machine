@@ -53,9 +53,8 @@ RSpec.describe VendingMachine::CommandPanel do
         change_dispenser = command_panel.change_dispenser
         account = command_panel.account
 
-        product = double(:product, name: "CHIPS", price: 1.00)
-
-        inventory.stock_item(:d, 9, product)
+        inventory.designate_section(:d, 9, name: "CHIPS", price: 1.00)
+        inventory.stock_item(:d, 9)
         account.add_funds(5)
 
         expect(change_dispenser).to receive(:dispense_bills).with(4)
@@ -72,16 +71,15 @@ RSpec.describe VendingMachine::CommandPanel do
         change_dispenser = command_panel.change_dispenser
         account = command_panel.account
 
-        product = double(:product, name: "CHIPS", price: 1.00)
-
-        inventory.stock_item(:d, 9, product)
+        inventory.designate_section(:d, 9, name: "CHIPS", price: 1.00)
+        inventory.stock_item(:d, 9)
         account.add_funds(5)
 
         expect {
           command_panel.push_button(:d)
           command_panel.push_button(9)
         }.to change {
-          inventory.items[:d][9].count
+          inventory.read_section(:d, 9).quantity
         }.from(1).to(0)
       end
 
@@ -91,9 +89,8 @@ RSpec.describe VendingMachine::CommandPanel do
         display = command_panel.display
         account = command_panel.account
 
-        product = double(:product, name: "CHIPS", price: 1.00)
-
-        inventory.stock_item(:d, 9, product)
+        inventory.designate_section(:d, 9, name: "CHIPS", price: 1.00)
+        inventory.stock_item(:d, 9)
 
         expect(display).to receive(:show_message).with("SOLD OUT")
         command_panel.push_button(:d)
