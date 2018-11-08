@@ -42,13 +42,14 @@ module VendingMachine
     end
 
     def handle_successful_purchase(purchase)
+      display.show_message("THANK YOU, ENJOY! <3 <3 <3")
       inventory.dispense_item(selected_row, selected_column)
       account.subtract_funds(purchase.cost)
       reset_machine
     end
 
     def handle_failed_purchase(purchase)
-      display.error_message(purchase.error)
+      display.show_message(purchase.error)
       reset_selection
     end
 

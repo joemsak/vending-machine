@@ -95,11 +95,11 @@ RSpec.describe VendingMachine::CommandPanel do
 
         inventory.stock_item(:d, 9, product)
 
-        expect(display).to receive(:error_message).with("SOLD OUT")
+        expect(display).to receive(:show_message).with("SOLD OUT")
         command_panel.push_button(:d)
         command_panel.push_button(8)
 
-        expect(display).to receive(:error_message).with("MUST ADD $1.00")
+        expect(display).to receive(:show_message).with("MUST ADD $1.00")
         command_panel.push_button(:d)
         command_panel.push_button(9)
       end
