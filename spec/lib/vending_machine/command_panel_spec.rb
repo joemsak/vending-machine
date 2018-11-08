@@ -84,6 +84,25 @@ RSpec.describe VendingMachine::CommandPanel do
           inventory.items[:d][9].count
         }.from(1).to(0)
       end
+
+      it "passes on failed purchase error messages to the display" do
+        command_panel = VendingMachine::CommandPanel.new
+        inventory = command_panel.inventory
+        display = command_panel.display
+        account = command_panel.account
+
+        product = double(:product, name: "CHIPS", price: 1.00)
+
+        inventory.stock_item(:d, 9, product)
+
+        expect(display).to receive(:error_message).with("SOLD OUT")
+        command_panel.push_button(:d)
+        command_panel.push_button(8)
+
+        expect(display).to receive(:error_message).with("MUST ADD $1.00")
+        command_panel.push_button(:d)
+        command_panel.push_button(9)
+      end
     end
 
     context ":cancel" do

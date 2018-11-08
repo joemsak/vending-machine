@@ -71,7 +71,7 @@ RSpec.describe VendingMachine::Inventory do
 
       expect(purchase).not_to be_succeeded
       expect(purchase).to be_failed
-      expect(purchase.error).to eq("MUST ADD 0.10")
+      expect(purchase.error).to eq("MUST ADD $0.10")
     end
 
     it "returns a successful purchase otherwise" do

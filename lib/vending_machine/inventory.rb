@@ -99,7 +99,7 @@ module VendingMachine
         FailedPurchase.new("SOLD OUT")
       elsif item.price > account.balance
         amount_needed = (item.price - account.balance)
-        FailedPurchase.new("MUST ADD #{sprintf('%.2f', amount_needed)}")
+        FailedPurchase.new("MUST ADD $#{sprintf('%.2f', amount_needed)}")
       else
         SuccessfulPurchase.new(item)
       end
