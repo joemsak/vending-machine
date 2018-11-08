@@ -32,9 +32,9 @@ module VendingMachine
                       account
                     )
         handle_purchase(purchase)
+      else
+        reset_selection
       end
-
-      reset_selection
     end
 
     def handle_purchase(purchase)
@@ -48,6 +48,7 @@ module VendingMachine
     end
 
     def reset_machine
+      reset_selection
       change_due = account.reset_balance
       change_dispenser.dispense_balance(change_due)
     end
